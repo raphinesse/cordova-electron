@@ -75,10 +75,10 @@ describe('create', () => {
 
         const projectname = 'alreadyexist';
         const projectid = 'com.test.alreadyexist';
+        const projectPath = path.join(tmpDir, projectname);
 
-        expect(() => {
-            create.createProject(tmpDir, projectname, projectid, projectname);
-        }).toThrowError(/destination already exists/);
+        return expectAsync(create.createProject(projectPath, projectname, projectid))
+            .toBeRejectedWithError(/destination already exists/);
     });
 
     it('should stop creating project when requirement check fails', () => {

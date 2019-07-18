@@ -86,16 +86,11 @@ describe('create', () => {
             run: jasmine.createSpy('check_reqs').and.returnValue(false)
         });
 
-        const emitSpy = jasmine.createSpy('emit');
-        create.__set__('events', {
-            emit: emitSpy
-        });
-
         const projectname = 'reqfail';
         const projectid = 'com.test.reqfail';
+        const projectPath = path.join(tmpDir, projectname);
 
-        create.createProject(tmpDir, projectname, projectid, projectname);
-
-        expect(emitSpy).toHaveBeenCalledWith('error', 'Please make sure you meet the software requirements in order to build a cordova electron project');
+        return expectAsync(create.createProject(projectPath, projectname, projectid))
+            .toBeRejectedWithError('Please make sure you meet the software requirements in order to build a cordova electron project');
     });
 });
